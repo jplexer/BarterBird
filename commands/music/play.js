@@ -24,9 +24,10 @@ module.exports = {
             });
 
             // let's reply with the track info
-            if (track.playlist.type === 'album') {
-                return interaction.followUp(`Album **${track.playlist.title}** by **${track.author}** enqueued!`);
-            } else if(track.playlist) {
+            if(track.playlist) {
+                if (track.playlist.type === 'album') {
+                    return interaction.followUp(`Album **${track.playlist.title}** by **${track.author}** enqueued!`);
+                }
                 return interaction.followUp({ content: `Playlist **${track.playlist.title}** with **${track.playlist.tracks.length}** tracks enqueued!`});
             }  else {
                 return interaction.followUp(`**${track.title}** by **${track.author}** enqueued!`);
