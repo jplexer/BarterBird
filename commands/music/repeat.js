@@ -13,13 +13,13 @@ module.exports = {
 		if (!queue) {
 			return interaction.reply({ content:'You are not connected to a voice channel!', ephemeral: true });
 		}
-		if (queue.repeatMode !== 0) {
-			queue.setRepeatMode(0);
-			await interaction.reply({ content: "▶️ | Continuing normally"});
-		} else if (queueSkip) {
+		if (queueSkip && queue.repeatMode !== 2) {
 			queue.setRepeatMode(2);
 			await interaction.reply({ content: "🔂 | Repeating the queue"});
-        } else {
+        } else if (queue.repeatMode !== 0) {
+			queue.setRepeatMode(0);
+			await interaction.reply({ content: "▶️ | Continuing normally"});
+		} else {
             queue.setRepeatMode(1);
             await interaction.reply({ content: "🔁 | Repeating the current song"});
         }
