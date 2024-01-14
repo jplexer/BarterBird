@@ -176,3 +176,9 @@ dist
 
 # Bot config
 confidentialconfig.json
+
+# Server database
+database.sqlite
+
+# Bun lock file
+bun.lockb

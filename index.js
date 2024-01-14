@@ -1,11 +1,19 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const Sequelize = require('sequelize');
 const { token } = require('./confidentialconfig.json');
 const { Player } = require('discord-player');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 'GuildVoiceStates'] });
 
+const sequelize = new Sequelize('database', 'user', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	// SQLite only
+	storage: 'database.sqlite',
+});
 
 // Command handler
 client.commands = new Collection();
@@ -39,6 +47,21 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+const serverconfig = sequelize.define('serverconfig', {
+	serverId: {
+		type: Sequelize.STRING,
+		unique: true,
+		primaryKey: true,
+	},
+	searchProvider: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0,
+		allowNull: false,
+	}
+});
+
+client.serverconfig = serverconfig;
 
 const player = new Player(client);
 player.extractors.loadDefault();
