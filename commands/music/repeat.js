@@ -6,7 +6,7 @@ module.exports = {
 		.setDescription(`hello yes I want you to play this song again`)
         .addBooleanOption(option =>option.setName('queue')
                 .setDescription('should the whole queue be repeated?')),
-	async execute(interaction, client) {
+	async execute(interaction) {
         const player = useMainPlayer();
 		var queue = player.nodes.get(interaction.guildId);
         const queueSkip = interaction.options.getBoolean('queue');
