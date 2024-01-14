@@ -1,7 +1,7 @@
 {
   "name": "barterbird",
+  "version": "1.0.0",
   "module": "index.js",
-  "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -9,7 +9,14 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@discord-player/extractor": "^4.4.6",
+    "@discordjs/opus": "^0.9.0",
+    "@discordjs/voice": "^0.16.1",
+    "discord-player": "^6.6.7",
     "discord.js": "^14.14.1",
-    "eslint": "^8.56.0"
+    "ffmpeg-static": "^5.2.0",
+    "libsodium-wrappers": "^0.7.13",
+    "play-dl": "^1.9.7",
+    "sodium": "^3.0.2"
   }
 }
