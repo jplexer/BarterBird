@@ -1,6 +1,6 @@
 {
   "name": "barterbird",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "module": "index.js",
   "peerDependencies": {
     "typescript": "^5.0.0"
