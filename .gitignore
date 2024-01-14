@@ -182,3 +182,5 @@ database.sqlite
 
 # Bun lock file
 bun.lockb
+
+package-lock.json
