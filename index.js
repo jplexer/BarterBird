@@ -4,7 +4,6 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const Sequelize = require('sequelize');
 const { token } = require('./confidentialconfig.json');
 const { Player } = require('discord-player');
-const startWebSocketServer = require('./helpers/websocketHandler.js');
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 'GuildVoiceStates'] });
@@ -72,8 +71,6 @@ player.events.on('playerStart', (queue, track) => {
     queue.metadata.channel.send(`Now Playing: **${track.title}** (${track.duration}) \n @ ${track.url}`);
 });
 
-
-startWebSocketServer();
 
 // Login to Discord with your client's token
 client.login(token);
