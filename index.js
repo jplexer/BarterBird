@@ -64,7 +64,20 @@ const serverconfig = sequelize.define('serverconfig', {
 	}
 });
 
+const userconfig = sequelize.define('userconfig', {
+	userId: {
+		type: Sequelize.STRING,
+		unique: true,
+		primaryKey: true,
+	},
+	lastfmSessionKey: {
+		type: Sequelize.STRING,
+		allowNull: true,
+	},
+});
+
 client.serverconfig = serverconfig;
+client.userconfig = userconfig;
 
 const player = new Player(client);
 player.extractors.register(YoutubeiExtractor, {

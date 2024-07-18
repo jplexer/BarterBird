@@ -184,3 +184,6 @@ database.sqlite
 bun.lockb
 
 package-lock.json
+
+# Temporary files
+*.tmp
