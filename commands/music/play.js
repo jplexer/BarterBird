@@ -37,8 +37,13 @@ module.exports = {
             if (searchEngine === 1) {
                 searchEngine = 'youtubeSearch';
             }
-        } else if (searchProvider === 0) {
+        } else {
             searchEngine = 'spotifySearch';
+        }
+        
+        // if the query is a link, do not use search engine
+        if (query.startsWith('http')) {
+            searchEngine = "auto";
         }
 
 

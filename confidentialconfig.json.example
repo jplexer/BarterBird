@@ -4,4 +4,6 @@
     "guildId": "developmentguildid",
     "yt_access_token": "accesstoken",
     "yt_refresh_token": "refreshtoken",
+    "lastfm_api_key": "",
+    "lastfm_api_secret": ""
 }

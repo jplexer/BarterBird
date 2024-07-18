@@ -1,6 +1,6 @@
 {
   "name": "barterbird",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "module": "index.js",
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -8,6 +8,8 @@
   "dependencies": {
     "@discord-player/extractor": "^4.4.6",
     "@discordjs/voice": "^0.16.1",
+    "axios": "^1.7.2",
+    "crypto": "^1.0.1",
     "discord-player": "^6.6.7",
     "discord-player-youtubei": "^1.1.10",
     "discord.js": "^14.14.1",
