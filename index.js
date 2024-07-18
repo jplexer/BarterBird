@@ -1,8 +1,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { YoutubeiExtractor, createYoutubeiStream } = require("discord-player-youtubei")
+const { SpotifyExtractor } = require("@discord-player/extractor")
 const Sequelize = require('sequelize');
-const { token } = require('./confidentialconfig.json');
+const { token, yt_access_token, yt_refresh_token } = require('./confidentialconfig.json');
 const { Player } = require('discord-player');
 
 
@@ -65,7 +67,16 @@ const serverconfig = sequelize.define('serverconfig', {
 client.serverconfig = serverconfig;
 
 const player = new Player(client);
-player.extractors.loadDefault();
+player.extractors.register(YoutubeiExtractor, {
+	authentication: {
+		accessToken: yt_access_token,
+		refreshToken: yt_refresh_token,
+		expiry: 0
+},
+})
+player.extractors.register(SpotifyExtractor, {
+    createStream: createYoutubeiStream
+})
 
 player.events.on('playerStart', (queue, track) => {
     queue.metadata.channel.send(`Now Playing: **${track.title}** (${track.duration}) \n @ ${track.url}`);

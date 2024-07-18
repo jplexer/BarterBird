@@ -13,6 +13,10 @@ Follow these steps to install and configure BarterBird:
    - `token`: Your Bot token.
    - `clientId`: Your Bot's Application ID.
    - `guildId`: Your development server's ID.
+3. Run `npx --no discord-player-youtubei`
+4. Update the following fields in `confedentialconfig.json`:
+   - `yt_access_token`: The access token from Step 3.
+   - `yt_refresh_token`: The refresh token from Step 3.
 
 ### Dependencies Installation
 
