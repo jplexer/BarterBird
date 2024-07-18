@@ -12,6 +12,11 @@ module.exports = {
             subcommand
                 .setName('login')
                 .setDescription('login to lastfm')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('logout')
+                .setDescription('logout from lastfm')
         ),
 	async execute(interaction) {
         if (interaction.options.getSubcommand() === 'login') {
@@ -78,6 +83,15 @@ module.exports = {
                     console.error(e);
 	                await interaction.editReply({ content: "Login hasn't happened within 3 minutes, cancelling", components: [], ephemeral: true });
                 }
+        } else if (interaction.options.getSubcommand() === 'logout') {
+            const userconfig = await interaction.client.userconfig.findOne({ where: { userId:  interaction.user.id} });
+
+            if (userconfig) {
+                await interaction.client.userconfig.destroy({ where: { userId:  interaction.user.id} });
+                await interaction.reply({ content: `Logout successful`, ephemeral: true });
+            } else {
+                await interaction.reply({ content: `You are not logged in`, ephemeral: true });
+            }
         } else {
             await interaction.reply({ content: `invalid subcommand`, ephemeral: true });
         }
