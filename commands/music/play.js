@@ -37,6 +37,8 @@ module.exports = {
             if (searchEngine === 1) {
                 searchEngine = 'youtubeSearch';
             }
+        } else if (searchProvider === 0) {
+            searchEngine = 'spotifySearch';
         }
 
 
