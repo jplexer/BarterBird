@@ -17,6 +17,11 @@ module.exports = {
             subcommand
                 .setName('logout')
                 .setDescription('logout from lastfm')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('toggleyoutube')
+                .setDescription('toggle Youtube Scrobbling (not recommended)')
         ),
 	async execute(interaction) {
         if (interaction.options.getSubcommand() === 'login') {
@@ -92,6 +97,16 @@ module.exports = {
             } else {
                 await interaction.reply({ content: `You are not logged in`, ephemeral: true });
             }
+        } else if (interaction.options.getSubcommand() === 'toggleyoutube') {
+            const userconfig = await interaction.client.userconfig.findOne({ where: { userId:  interaction.user.id} });
+
+            if (userconfig) {
+                await interaction.client.userconfig.update({ youtubeScrobble: !userconfig.youtubeScrobble }, { where: { userId:  interaction.user.id} });
+                await interaction.reply({ content: `Youtube Scrobbling ${userconfig.youtubeScrobble ? 'disabled' : 'enabled'}`, ephemeral: true });
+            } else {
+                await interaction.reply({ content: `You are not logged in`, ephemeral: true });
+            }
+
         } else {
             await interaction.reply({ content: `invalid subcommand`, ephemeral: true });
         }
