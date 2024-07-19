@@ -5,7 +5,7 @@ const { YoutubeiExtractor, createYoutubeiStream } = require("discord-player-yout
 const { SpotifyExtractor } = require("@discord-player/extractor")
 const { serverconfig, userconfig } = require('./utils/db.js');
 const { token, yt_access_token, yt_refresh_token } = require('./confidentialconfig.json');
-const { Player } = require('discord-player');
+const { Player, usePlayer } = require('discord-player');
 const { lastfm } = require("./config.json")
 const { setNowPlaying, scrobbleSong } = require('./utils/lastfm.js');
 
@@ -83,7 +83,13 @@ player.events.on('playerFinish', async (queue, track) => {
 			return;
 		}
 
-		//scrobble the track for each user in the channel
+		const guildNode = usePlayer(queue.guild.id);
+		const playbackTime = guildNode.playbackTime;
+		//check if the track was played for at least 50% of its duration or 4 minutes
+		if (playbackTime < track.durationMS / 2 && playbackTime < 240000) {
+			return 
+		}
+		// Scrobble the song
 		queue.channel.members.forEach(member => {
 			scrobbleSong(track, member);
 		})
