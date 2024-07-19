@@ -3,7 +3,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { YoutubeiExtractor, createYoutubeiStream } = require("discord-player-youtubei")
 const { SpotifyExtractor } = require("@discord-player/extractor")
-const Sequelize = require('sequelize');
+const { serverconfig, userconfig } = require('./utils/db.js');
 const { token, yt_access_token, yt_refresh_token, lastfm_api_key, lastfm_api_secret } = require('./confidentialconfig.json');
 const { Player } = require('discord-player');
 const { lastfm } = require("./config.json")
@@ -13,13 +13,7 @@ const crypto = require('crypto');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 'GuildVoiceStates'] });
 
-const sequelize = new Sequelize('database', 'user', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	// SQLite only
-	storage: 'database.sqlite',
-});
+
 
 // Command handler
 client.commands = new Collection();
@@ -53,36 +47,6 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
-const serverconfig = sequelize.define('serverconfig', {
-	serverId: {
-		type: Sequelize.STRING,
-		unique: true,
-		primaryKey: true,
-	},
-	searchProvider: {
-		type: Sequelize.INTEGER,
-		defaultValue: 0,
-		allowNull: false,
-	}
-});
-
-const userconfig = sequelize.define('userconfig', {
-	userId: {
-		type: Sequelize.STRING,
-		unique: true,
-		primaryKey: true,
-	},
-	lastfmSessionKey: {
-		type: Sequelize.STRING,
-		allowNull: true,
-	},
-	youtubeScrobble: {
-		type: Sequelize.BOOLEAN,
-		defaultValue: false,
-		allowNull: false,
-	}
-});
 
 client.serverconfig = serverconfig;
 client.userconfig = userconfig;
@@ -185,4 +149,5 @@ function scrobbleSong(track, member) {
 // Login to Discord with your client's token
 client.login(token);
 
-module.exports = { scrobbleSong, setNowPlaying };
+module.exports.setNowPlaying = setNowPlaying;
+module.exports.scrobbleSong = scrobbleSong;
