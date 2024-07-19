@@ -88,6 +88,8 @@ client.serverconfig = serverconfig;
 client.userconfig = userconfig;
 
 const player = new Player(client);
+player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor' && ext !== 'SpotifyExtractor');
+
 player.extractors.register(YoutubeiExtractor, {
 	authentication: {
 		accessToken: yt_access_token,
@@ -95,9 +97,11 @@ player.extractors.register(YoutubeiExtractor, {
 		expiry: 0
 },
 })
+
 player.extractors.register(SpotifyExtractor, {
     createStream: createYoutubeiStream
 })
+
 
 player.events.on('playerStart', async (queue, track) => {
     queue.metadata.channel.send(`Now Playing: **${track.title}** (${track.duration}) \n @ ${track.url}`);
@@ -130,6 +134,9 @@ function setNowPlaying(track, member) {
 			if (!userconfig.youtubeScrobble && track.source == 'youtube') {
 				return;
 			}
+			if (track.source == 'arbitrary') {
+				return;
+			}
 			var session_key = userconfig.lastfmSessionKey;
 			var signature = crypto.createHash('md5').update(`api_key${lastfm_api_key}artist${track.author}method${method}sk${session_key}track${track.title}${lastfm_api_secret}`).digest('hex');
 			axios.post(`http://ws.audioscrobbler.com/2.0/?method=track.updateNowPlaying&api_key=${lastfm_api_key}&artist=${track.author}&track=${track.title}&sk=${session_key}&format=json&api_sig=${signature}`)
@@ -150,6 +157,9 @@ function scrobbleSong(track, member) {
 	client.userconfig.findOne({ where: { userId: member.id } }).then(userconfig => {
 		if (userconfig) {
 			if (!userconfig.youtubeScrobble && track.source == 'youtube') {
+				return;
+			}
+			if (track.source == 'arbitrary') {
 				return;
 			}
 			var session_key = userconfig.lastfmSessionKey;
