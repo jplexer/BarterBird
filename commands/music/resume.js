@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer } = require('discord-player');
-const { setNowPlaying } = require('../../index');
+const { setNowPlaying } = require('../../utils/lastfm.js');
 const { lastfm } = require('../../config.json');
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,7 +15,7 @@ module.exports = {
 		queue.node.resume();
 		// we should send now playing to lastfm again
 		if (lastfm) {
-			const track = queue.current;
+			const track = queue.currentTrack;
 			queue.channel.members.forEach(member => {
 				setNowPlaying(track, member);
 			})
