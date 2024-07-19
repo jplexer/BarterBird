@@ -112,7 +112,7 @@ player.events.on('playerStart', async (queue, track) => {
 player.events.on('playerFinish', async (queue, track) => {
 	if (lastfm) {
 		// check if the track was longer than 30 seconds
-		if (track.duration < 30) {
+		if (track.durationMS < 30000) {
 			return;
 		}
 
