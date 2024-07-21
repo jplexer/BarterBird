@@ -10,6 +10,11 @@ function setNowPlaying(track, member) {
 			if (!userconf.youtubeScrobble && track.source == 'youtube') {
 				return;
 			}
+
+			if (!userconf.scrobblingEnabled) {
+				return;
+			}
+
 			if (track.source == 'arbitrary') {
 				return;
 			}
@@ -35,6 +40,11 @@ function scrobbleSong(track, member) {
 			if (!userconf.youtubeScrobble && track.source == 'youtube') {
 				return;
 			}
+
+			if (!userconf.scrobblingEnabled) {
+				return;
+			}
+
 			if (track.source == 'arbitrary') {
 				return;
 			}

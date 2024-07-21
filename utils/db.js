@@ -34,6 +34,10 @@ const userconfig = sequelize.define('userconfig', {
   youtubeScrobble: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
+  },
+  scrobblingEnabled: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
   }
 });
 

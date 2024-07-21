@@ -22,6 +22,11 @@ module.exports = {
             subcommand
                 .setName('toggleyoutube')
                 .setDescription('toggle Youtube Scrobbling (not recommended)')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('togglescrobbling')
+            .setDescription('toggle scrobbling on or off')
         ),
 	async execute(interaction) {
         if (interaction.options.getSubcommand() === 'login') {
@@ -107,7 +112,16 @@ module.exports = {
                 await interaction.reply({ content: `You are not logged in`, ephemeral: true });
             }
 
-        } else {
+        } else if (interaction.options.getSubcommand() === 'togglescrobbling') {
+            const userconfig = await interaction.client.userconfig.findOne({ where: { userId:  interaction.user.id} });
+            if (userconfig) {
+                await interaction.client.userconfig.update({ scrobblingEnabled: !userconfig.scrobblingEnabled }, { where: { userId:  interaction.user.id} });
+                await interaction.reply({ content: `Scrobbling ${userconfig.scrobblingEnabled ? 'disabled' : 'enabled'}`, ephemeral: true });
+            } else {
+                await interaction.reply({ content: `You are not logged in`, ephemeral: true });
+            }
+
+        }else {
             await interaction.reply({ content: `invalid subcommand`, ephemeral: true });
         }
 	},
