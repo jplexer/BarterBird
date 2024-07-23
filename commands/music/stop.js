@@ -19,7 +19,7 @@ module.exports = {
 			// check if the track was longer than 30 seconds
 			if (track.durationMS < 30000) {
 				queue.delete();
-				await interaction.reply({ content: "Stopping..."});
+				await interaction.reply({ content: "<:arret:1265225143064592424> Stopping..."});
 				return;
 			}
 	
@@ -28,7 +28,7 @@ module.exports = {
 			//check if the track was played for at least 50% of its duration or 4 minutes
 			if (playbackTime < track.durationMS / 2 && playbackTime < 240000) {
 				queue.delete();
-				await interaction.reply({ content: "Stopping..."});
+				await interaction.reply({ content: "<:arret:1265225143064592424> Stopping..."});
 				return;
 			}
 
@@ -38,6 +38,6 @@ module.exports = {
 			})
 		}
 		queue.delete();
-		await interaction.reply({ content: "Stopping..."});
+		await interaction.reply({ content: "<:arret:1265225143064592424> Stopping..."});
 	},
 };
