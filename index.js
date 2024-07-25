@@ -59,6 +59,10 @@ player.extractors.register(YoutubeiExtractor, {
 		refreshToken: yt_refresh_token,
 		expiry: 0
 },
+streamOptions: {
+	useClient: "ANDROID"
+ } 
+
 })
 
 player.extractors.register(SpotifyExtractor, {
