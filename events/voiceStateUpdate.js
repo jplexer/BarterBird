@@ -24,6 +24,18 @@ module.exports = {
                     }
                 }
             }        
+        } else if (oldState.deaf && !newState.deaf) {
+            if (lastfm) {
+                const botVoiceChannelId = newState.guild.voiceStates.cache.get(newState.client.user.id)?.channelId;
+                if (newState.channelId === botVoiceChannelId) {
+                    const player = useMainPlayer();
+                    const queue = player.nodes.get(newState.guild.id);
+                    if (queue) {
+                       const track = queue.currentTrack;
+                        setNowPlaying(track, newState.member);
+                    }
+                }
+            }
         }
 	},
 };
