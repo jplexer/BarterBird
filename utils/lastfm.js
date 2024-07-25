@@ -18,6 +18,11 @@ function setNowPlaying(track, member) {
 			if (track.source == 'arbitrary') {
 				return;
 			}
+
+			if (member.voice.deaf) {
+				return;
+			}
+			
 			var session_key = userconf.lastfmSessionKey;
 			var signature = crypto.createHash('md5').update(`api_key${lastfm_api_key}artist${track.author}method${method}sk${session_key}track${track.title}${lastfm_api_secret}`).digest('hex');
 			axios.post(`http://ws.audioscrobbler.com/2.0/?method=track.updateNowPlaying&api_key=${lastfm_api_key}&artist=${track.author}&track=${track.title}&sk=${session_key}&format=json&api_sig=${signature}`)
@@ -48,6 +53,11 @@ function scrobbleSong(track, member) {
 			if (track.source == 'arbitrary') {
 				return;
 			}
+
+			if (member.voice.deaf) {
+				return;
+			}
+
 			var session_key = userconf.lastfmSessionKey;
 			var timestamp = Math.floor(new Date().getTime() / 1000);
 			//var chosenByUser = member.id == queue.metadata.user.id ? 1 : 0;
