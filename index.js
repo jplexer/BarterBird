@@ -4,7 +4,7 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { YoutubeiExtractor, createYoutubeiStream } = require("discord-player-youtubei")
 const { SpotifyExtractor } = require("@discord-player/extractor")
 const { serverconfig, userconfig } = require('./utils/db.js');
-const { token, yt_access_token, yt_refresh_token } = require('./confidentialconfig.json');
+const { token, yt_credentials } = require('./confidentialconfig.json');
 const { Player, usePlayer } = require('discord-player');
 const { lastfm } = require("./config.json")
 const { setNowPlaying, scrobbleSong } = require('./utils/lastfm.js');
@@ -54,11 +54,7 @@ const player = new Player(client);
 player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor' && ext !== 'SpotifyExtractor');
 
 player.extractors.register(YoutubeiExtractor, {
-	authentication: {
-		accessToken: yt_access_token,
-		refreshToken: yt_refresh_token,
-		expiry: 0
-},
+	authentication: yt_credentials,
 streamOptions: {
 	useClient: "ANDROID"
  } 

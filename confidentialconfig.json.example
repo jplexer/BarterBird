@@ -2,8 +2,7 @@
     "token": "bottoken",
     "clientId": "applicationid",
     "guildId": "developmentguildid",
-    "yt_access_token": "accesstoken",
-    "yt_refresh_token": "refreshtoken",
+    "yt_credentials": "output from npx command"
     "lastfm_api_key": "",
     "lastfm_api_secret": ""
 }
