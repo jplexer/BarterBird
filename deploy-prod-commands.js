@@ -2,7 +2,7 @@ const { REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('./confidentialconfig.json');
 const fs = require('node:fs');
 const path = require('node:path');
-const {lastfm} = require('./config.json');
+const { lastfm, genius } = require('./config.json');
 
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
@@ -21,6 +21,10 @@ for (const folder of commandFolders) {
             console.log(`[INFO] Skipping registration of the lastfm command as it is disabled in config.json.`);
             continue;
         }
+		if (file === 'lyrics.js' && genius === false) {
+			console.log(`[INFO] Skipping registration of the lyrics command as it is disabled in config.json.`);
+			continue;
+		}
 		if ('data' in command && 'execute' in command) {
 			commands.push(command.data.toJSON());
 		} else {

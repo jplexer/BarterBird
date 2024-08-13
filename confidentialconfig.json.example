@@ -4,5 +4,6 @@
     "guildId": "developmentguildid",
     "yt_credentials": "output from npx command"
     "lastfm_api_key": "",
-    "lastfm_api_secret": ""
+    "lastfm_api_secret": "",
+    "genius_api_key": ""
 }
