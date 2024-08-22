@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { setNowPlaying } = require('../utils/lastfm.js');
+const { setNowPlaying } = require('../utils/scrobbling.js');
 const { useMainPlayer } = require('discord-player');
 const { lastfm } = require("../config.json");
 

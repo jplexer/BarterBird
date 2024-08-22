@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer } = require('discord-player');
-const { setNowPlaying } = require('../../utils/lastfm.js');
+const { setNowPlaying } = require('../../utils/scrobbling.js');
 const { lastfm } = require('../../config.json');
 module.exports = {
 	data: new SlashCommandBuilder()

@@ -7,7 +7,7 @@ const { serverconfig, userconfig } = require('./utils/db.js');
 const { token, yt_credentials } = require('./confidentialconfig.json');
 const { Player, usePlayer } = require('discord-player');
 const { lastfm } = require("./config.json")
-const { setNowPlaying, scrobbleSong } = require('./utils/lastfm.js');
+const { setNowPlaying, scrobbleSong } = require('./utils/scrobbling.js');
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 'GuildVoiceStates'] });
