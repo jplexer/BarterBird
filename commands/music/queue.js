@@ -14,9 +14,9 @@ module.exports = {
 
         //return a list of songs in the queue as a code block
         var queueList = [];
-        queueList.push("Now Playing: " + queue.currentTrack.title);
+        queueList.push("Now Playing: " + queue.currentTrack.title + " - " + queue.currentTrack.author + " (" + queue.currentTrack.duration + ")");
         for (var i = 0; i < queue.tracks.toArray().length; i++) {
-            queueList.push((i + 1) + ". " + queue.tracks.toArray()[i].title);
+            queueList.push((i + 1) + ". " + queue.tracks.toArray()[i].title + " - " + queue.tracks.toArray()[i].author + " (" + queue.tracks.toArray()[i].duration + ")");
         }
 
         // Split the queueList into chunks of 2000 characters
