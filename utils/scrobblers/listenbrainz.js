@@ -19,9 +19,6 @@ let listenbrainzScrobbler = {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {
-            console.log(response.data);
-        })
         .catch(error => {
             console.log(error.response);
             if (error.response.status == 401) {
@@ -52,9 +49,6 @@ let listenbrainzScrobbler = {
                 'Authorization': `Token ${userToken}`,
                 'Content-Type': 'application/json'
             }
-        })
-        .then(response => {
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error.response);
