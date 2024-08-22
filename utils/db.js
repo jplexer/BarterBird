@@ -31,6 +31,10 @@ const userconfig = sequelize.define('userconfig', {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  listenbrainzToken: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   youtubeScrobble: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,

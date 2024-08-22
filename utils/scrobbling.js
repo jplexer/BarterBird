@@ -1,6 +1,7 @@
 const { userconfig } = require('./db.js');
-const { lastfm } = require("../config.json");
+const { lastfm, listenbrainz } = require("../config.json");
 const { lastfmScrobbler } = require('./scrobblers/lastfm.js');
+const { listenbrainzScrobbler } = require('./scrobblers/listenbrainz.js');
 
 function checkRequirements(track, member, userconf) {
     if (!userconf.youtubeScrobble && track.source == 'youtube') {
@@ -29,6 +30,10 @@ function setNowPlaying(track, member) {
                 if (lastfm && userconf.lastfmSessionKey) {
                     lastfmScrobbler.setNowPlaying(track, member, userconf.lastfmSessionKey);
                 }
+
+                if (listenbrainz && userconf.listenbrainzToken) {
+                    listenbrainzScrobbler.setNowPlaying(track, member, userconf.listenbrainzToken);
+                }
             }
         }
     });
@@ -40,7 +45,10 @@ function scrobbleSong(track, member) {
             if (checkRequirements(track, member, userconf)) {
                 if (lastfm && userconf.lastfmSessionKey) {
                     lastfmScrobbler.scrobbleSong(track, member, userconf.lastfmSessionKey);
-                    
+                }
+
+                if (listenbrainz && userconf.listenbrainzToken) {
+                    listenbrainzScrobbler.scrobbleSong(track, member, userconf.listenbrainzToken);
                 }
             }
         }

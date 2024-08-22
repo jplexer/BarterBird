@@ -97,15 +97,20 @@ module.exports = {
             const userconfig = await interaction.client.userconfig.findOne({ where: { userId:  interaction.user.id} });
 
             if (userconfig) {
-                await interaction.client.userconfig.destroy({ where: { userId:  interaction.user.id} });
-                await interaction.reply({ content: `Logout successful`, ephemeral: true });
+                if (!userconfig.listenbrainzToken) {
+                    await interaction.client.userconfig.destroy({ where: { userId: interaction.user.id } });
+                    await interaction.reply({ content: `Logout successful`, ephemeral: true });
+                } else {
+                    await interaction.client.userconfig.update({ lastfmSessionKey: null }, { where: { userId: interaction.user.id } });
+                    await interaction.reply({ content: `Logout successful`, ephemeral: true });
+                }
             } else {
                 await interaction.reply({ content: `You are not logged in`, ephemeral: true });
             }
         } else if (interaction.options.getSubcommand() === 'toggleyoutube') {
             const userconfig = await interaction.client.userconfig.findOne({ where: { userId:  interaction.user.id} });
 
-            if (userconfig) {
+            if (userconfig && userconfig.lastfmSessionKey) {
                 await interaction.client.userconfig.update({ youtubeScrobble: !userconfig.youtubeScrobble }, { where: { userId:  interaction.user.id} });
                 await interaction.reply({ content: `Youtube Scrobbling ${userconfig.youtubeScrobble ? 'disabled' : 'enabled'}`, ephemeral: true });
             } else {
@@ -114,7 +119,7 @@ module.exports = {
 
         } else if (interaction.options.getSubcommand() === 'togglescrobbling') {
             const userconfig = await interaction.client.userconfig.findOne({ where: { userId:  interaction.user.id} });
-            if (userconfig) {
+            if (userconfig && userconfig.lastfmSessionKey) {
                 await interaction.client.userconfig.update({ scrobblingEnabled: !userconfig.scrobblingEnabled }, { where: { userId:  interaction.user.id} });
                 await interaction.reply({ content: `Scrobbling ${userconfig.scrobblingEnabled ? 'disabled' : 'enabled'}`, ephemeral: true });
             } else {

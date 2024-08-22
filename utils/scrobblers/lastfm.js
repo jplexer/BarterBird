@@ -14,7 +14,11 @@ let lastfmScrobbler = {
 				// DM user to reauthenticate
 				member.send(`Your Last.fm session key is invalid. Please reauthenticate.`);
 				// delete their userconf
-				userconfig.destroy({ where: { userId: member.id } });
+				if (!user.listenbrainzToken) {
+					userconfig.destroy({ where: { userId: member.id } });
+				} else {
+					userconfig.update({ lastfmSessionKey: null }, { where: { userId: member.id } });
+				}
 			}
 		});
 	},
@@ -30,7 +34,11 @@ let lastfmScrobbler = {
 				// DM user to reauthenticate
 				member.send(`Your Last.fm session key is invalid. Please reauthenticate.`);
 				// delete their userconf
-				userconfig.destroy({ where: { userId: member.id } });
+				if (!user.listenbrainzToken) {
+					userconfig.destroy({ where: { userId: member.id } });
+				} else {
+					userconfig.update({ lastfmSessionKey: null }, { where: { userId: member.id } });
+				}
 			}
 		});
 	}

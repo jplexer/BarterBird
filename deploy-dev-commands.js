@@ -21,6 +21,10 @@ for (const folder of commandFolders) {
             console.log(`[INFO] Skipping registration of the lastfm command as it is disabled in config.json.`);
             continue;
         }
+		if (file === 'listenbrainz.js' && listenbrainz === false) {
+            console.log(`[INFO] Skipping registration of the listenbrainz command as it is disabled in config.json.`);
+            continue;
+        }
 		if (file === 'lyrics.js' && genius === false) {
 			console.log(`[INFO] Skipping registration of the lyrics command as it is disabled in config.json.`);
 			continue;
