@@ -2,7 +2,7 @@ const { REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('./confidentialconfig.json');
 const fs = require('node:fs');
 const path = require('node:path');
-const { lastfm, genius } = require('./config.json');
+const { lastfm, genius, listenbrainz } = require('./config.json');
 
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
