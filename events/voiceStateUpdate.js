@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const { setNowPlaying } = require('../utils/scrobbling.js');
 const { useMainPlayer } = require('discord-player');
-const { lastfm } = require("../config.json");
+const { lastfm, listenbrainz } = require("../config.json");
 
 module.exports = {
 	name: Events.VoiceStateUpdate,
@@ -11,7 +11,7 @@ module.exports = {
         if (newState.channelId === null) {
             return;
         } else if (oldState.channelId === null || oldState.channelId !== newState.channelId) {
-            if (lastfm) {
+            if (lastfm || listenbrainz) {
                 // check if new channel is the same the bot is in
                 // if so, setNowPlayer for the new user
                 const botVoiceChannelId = newState.guild.voiceStates.cache.get(newState.client.user.id)?.channelId;
@@ -25,7 +25,7 @@ module.exports = {
                 }
             }        
         } else if (oldState.deaf && !newState.deaf) {
-            if (lastfm) {
+            if (lastfm || listenbrainz) {
                 const botVoiceChannelId = newState.guild.voiceStates.cache.get(newState.client.user.id)?.channelId;
                 if (newState.channelId === botVoiceChannelId) {
                     const player = useMainPlayer();

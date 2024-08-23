@@ -6,7 +6,7 @@ const { SpotifyExtractor } = require("@discord-player/extractor")
 const { serverconfig, userconfig } = require('./utils/db.js');
 const { token, yt_credentials } = require('./confidentialconfig.json');
 const { Player, usePlayer } = require('discord-player');
-const { lastfm } = require("./config.json")
+const { lastfm, listenbrainz } = require("./config.json")
 const { setNowPlaying, scrobbleSong } = require('./utils/scrobbling.js');
 
 
@@ -68,7 +68,7 @@ player.extractors.register(SpotifyExtractor, {
 
 player.events.on('playerStart', async (queue, track) => {
     queue.metadata.channel.send(`Now Playing: **${track.title}** (${track.duration}) \n @ ${track.url}`);
-	if (lastfm) {
+	if (lastfm || listenbrainz) {
 		// Update last.fm now playing
 		queue.channel.members.forEach(member => {
 			setNowPlaying(track, member);
@@ -77,7 +77,7 @@ player.events.on('playerStart', async (queue, track) => {
 });
 
 player.events.on('playerFinish', async (queue, track) => {
-	if (lastfm) {
+	if (lastfm || listenbrainz) {
 		// check if the track was longer than 30 seconds
 		if (track.durationMS < 30000) {
 			return;

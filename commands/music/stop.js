@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer, usePlayer } = require('discord-player');
-const { lastfm } = require("../../config.json");
+const { lastfm, listenbrainz } = require("../../config.json");
 const { scrobbleSong } = require("../../utils/scrobbling.js");
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 			return interaction.reply({ content:'You are not connected to a voice channel!', ephemeral: true });
 		}
 		const track = queue.currentTrack;
-		if (lastfm) {
+		if (lastfm || listenbrainz) {
 			// check if the track was longer than 30 seconds
 			if (track.durationMS < 30000) {
 				queue.delete();

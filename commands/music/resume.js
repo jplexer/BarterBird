@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer } = require('discord-player');
 const { setNowPlaying } = require('../../utils/scrobbling.js');
-const { lastfm } = require('../../config.json');
+const { lastfm, listenbrainz } = require('../../config.json');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('resume')
@@ -14,7 +14,7 @@ module.exports = {
 		}
 		queue.node.resume();
 		// we should send now playing to lastfm again
-		if (lastfm) {
+		if (lastfm || listenbrainz) {
 			const track = queue.currentTrack;
 			queue.channel.members.forEach(member => {
 				setNowPlaying(track, member);
