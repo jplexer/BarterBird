@@ -4,6 +4,5 @@
     "githubRepo": "jplexer/BarterBird",
     "lastfm": true,
     "listenbrainz": true,
-    "listenbrainzhost": "https://api.listenbrainz.org",
-    "genius": false
+    "listenbrainzhost": "https://api.listenbrainz.org"
 }

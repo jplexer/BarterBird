@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer } = require('discord-player');
-const { getLyrics } = require('genius-lyrics-api');
-const { genius_api_key } = require('../../confidentialconfig.json');
 module.exports = {
 	data: new SlashCommandBuilder()
         .setName('lyrics')
@@ -12,24 +10,17 @@ module.exports = {
 		if (!queue) {
 			return interaction.reply({ content:'You are not connected to a voice channel!', ephemeral: true });
 		}
-        // let's defer the interaction as things can take time to process
+
         await interaction.deferReply();
 
-        const songLyrics = await getLyrics(
-            {
-                apiKey: genius_api_key,
-                title: queue.currentTrack.title,
-                artist: queue.currentTrack.author,
-                optimizeQuery: true
-            }
-        )
-
-        if (!songLyrics) {
-            return interaction.editReply({ content: 'No lyrics found for this song.' });
-        }
-
+        const lyrics = await player.lyrics.search({
+            q: queue.currentTrack.title + ' ' + queue.currentTrack.author,
+        }); // this is a lot better than genius but sometimes gives weird result, specify artistName as well in such situations
+        
+        if (!lyrics.length) return interaction.followUp({ content: 'No lyrics found', ephemeral: true });
+        
         // Split the lyrics into chunks of 2000 characters
-        const chunks = songLyrics.match(/[\s\S]{1,1994}/g); // 2000 - 6 (for code block markdown)
+        const chunks = lyrics[0].plainLyrics.match(/[\s\S]{1,1994}/g); // 2000 - 6 (for code block markdown)
 
         // Send each chunk as a separate message wrapped in code blocks
         for (const chunk of chunks) {
