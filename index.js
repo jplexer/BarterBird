@@ -94,7 +94,7 @@ player.events.on('playerStart', async (queue, track) => {
 		syncedLyrics.onChange(async (lyrics, timestamp) => {
 			// timestamp = timestamp in lyrics (not queue's time)
 			// lyrics = line in that timestamp
-			await getKaraokeState(queue.guild.id).karaoke?.send({
+			await getKaraokeState(queue.guild.id).thread?.send({
 				content: `${lyrics}`
 			});
 		});
