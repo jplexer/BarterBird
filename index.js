@@ -104,12 +104,6 @@ player.events.on('playerStart', async (queue, track) => {
 });
 
 player.events.on('playerFinish', async (queue, track) => {
-	if (getKaraokeState(queue.guild.id).karaoke && getKaraokeState(queue.guild.id).thread) {
-		await getKaraokeState(queue.guild.id).karaoke?.send({
-			content: 'This song has ended. Thank you for singing!'
-		});
-	}
-
 	if (lastfm || listenbrainz) {
 		// check if the track was longer than 30 seconds
 		if (track.durationMS < 30000) {
@@ -131,7 +125,7 @@ player.events.on('playerFinish', async (queue, track) => {
 	}
 });
 
-player.events.on('disconnect', async (queue, track) => {
+player.events.on('queueDelete', async (queue, track) => {
 	setKaraokeState(queue.guild.id, false, null);
 });
 

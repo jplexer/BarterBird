@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer, usePlayer } = require('discord-player');
 const { lastfm, listenbrainz } = require("../../config.json");
 const { scrobbleSong } = require("../../utils/scrobbling.js");
+const { getKaraokeState } = require('../../utils/karaoke.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

@@ -5,13 +5,13 @@ const karaokeState = {};
 
 function setKaraokeState(guildId, state, thread) {
     karaokeState[guildId] = {
-        state: state,
+        karaoke: state,
         thread: thread
     };
 }
 
 function getKaraokeState(guildId) {
-    return karaokeState[guildId] || { state: false, thread: null };
+    return karaokeState[guildId] || { karaoke: false, thread: null };
 }
 
 module.exports = {
