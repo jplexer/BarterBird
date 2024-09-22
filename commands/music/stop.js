@@ -15,8 +15,8 @@ module.exports = {
 			return interaction.reply({ content:'You are not connected to a voice channel!', ephemeral: true });
 		}
 
-		if (queue.metadata.karaoke && queue.metadata.thread) {
-			await queue.metadata.thread?.send({
+		if (queue.karaoke && queue.thread) {
+			await queue.thread?.send({
 				content: 'The queue has been stopped. Thank you for singing!'
 			});
 		}

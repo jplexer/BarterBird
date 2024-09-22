@@ -11,18 +11,18 @@ module.exports = {
 			return interaction.reply({ content:'You are not connected to a voice channel!', ephemeral: true });
 		}
 
-        if (queue.metadata.karaoke) {
-            queue.metadata.karaoke = false;
-            queue.metadata.thread.send({
+        if (queue.karaoke) {
+            queue.karaoke = false;
+            queue.thread.send({
                 content: 'Karaoke mode disabled. Thank you for singing!'
             });
-            queue.metadata.thread = null;
+            queue.thread = null;
             return interaction.reply({ content: 'Karaoke mode disabled', ephemeral: true });
         } else {
             if (queue.metadata.channel.type === 2) {
                 return interaction.reply({ content: 'Karaoke mode is not supported in voice-text channels.', ephemeral: true });
             }
-            queue.metadata.karaoke = true;
+            queue.karaoke = true;
             queue.insertTrack(queue.currentTrack, 0);
             queue.node.skip();
             return interaction.reply({ content: 'Karaoke mode enabled!', ephemeral: true });
