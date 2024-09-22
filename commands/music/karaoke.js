@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useMainPlayer } = require('discord-player');
 const { getKaraokeState, setKaraokeState } = require('../../utils/karaoke');
+const { ThreadAutoArchiveDuration } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
         .setName('karaoke')
