@@ -3,7 +3,7 @@
 const karaokeState = {};
 
 
-function setKaraokeState(guildId, state, threadId) {
+function setKaraokeState(guildId, state, thread) {
     karaokeState[guildId] = {
         state: state,
         thread: thread
