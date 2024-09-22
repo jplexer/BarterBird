@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, ThreadAutoArchiveDuration } = require('discord.js');
 const { YoutubeiExtractor, createYoutubeiStream } = require("discord-player-youtubei")
 const { SpotifyExtractor } = require("@discord-player/extractor")
 const { serverconfig, userconfig } = require('./utils/db.js');
@@ -67,6 +67,17 @@ player.extractors.register(SpotifyExtractor, {
 
 
 player.events.on('playerStart', async (queue, track) => {
+	console.log(queue.metadata.channel.type);
+	if (!queue.metadata.thread  && queue.metadata.channel.type === 0 && queue.metadata.karaoke) {
+		// create a thread for the session
+		queue.metadata.thread = await queue.metadata.channel.threads.create({
+			name: 'Karaoke Session - ' + Date.now(),
+			autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
+			reason: 'Karaoke Session',
+		});
+	}
+	await
+
     queue.metadata.channel.send(`Now Playing: **${track.title}** (${track.duration}) \n @ ${track.url}`);
 	if (lastfm || listenbrainz) {
 		// Update last.fm now playing
@@ -74,17 +85,51 @@ player.events.on('playerStart', async (queue, track) => {
 			setNowPlaying(track, member);
 		})
 	}
+
+	if (queue.metadata.karaoke) {
+		const results = await player.lyrics.search({
+			q: track.title + ' ' + track.author,
+		}); // this is a lot better than genius but sometimes gives weird result, specify artistName as well in such situations
+		
+		const first = results[0];
+		
+		if (!first.syncedLyrics) {
+			return; // no synced lyrics available
+		}
+		
+		// load raw lyrics to the queue
+		const syncedLyrics = queue.syncedLyrics(first);
+		
+		// Listen to live updates. This will be called whenever discord-player detects a new line in the lyrics
+		syncedLyrics.onChange(async (lyrics, timestamp) => {
+			// timestamp = timestamp in lyrics (not queue's time)
+			// lyrics = line in that timestamp
+			await queue.metadata.thread?.send({
+				content: `${lyrics}`
+			});
+		});
+		
+		syncedLyrics.subscribe(); // start listening to live updates
+	}
 });
 
 player.events.on('playerFinish', async (queue, track) => {
+	if (queue.metadata.karaoke && queue.metadata.thread) {
+		await queue.metadata.thread?.send({
+			content: 'This song has ended. Thank you for singing!'
+		});
+	}
+
 	if (lastfm || listenbrainz) {
 		// check if the track was longer than 30 seconds
 		if (track.durationMS < 30000) {
 			return;
 		}
 
-		const guildNode = usePlayer(queue.guild.id);
-		const playbackTime = guildNode.playbackTime;
+		const guildNode = queue.node;//usePlayer(queue.guild.id);
+		// for some reason playbackTime is undefined when we enable karaoke mode
+		// doesnt matter, we just set it to 0. sucks but it works
+		const playbackTime = guildNode.playbackTime || 0;
 		//check if the track was played for at least 50% of its duration or 4 minutes
 		if (playbackTime < track.durationMS / 2 && playbackTime < 240000) {
 			return 
