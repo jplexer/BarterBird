@@ -15,8 +15,8 @@ module.exports = {
 			return interaction.reply({ content:'You are not connected to a voice channel!', ephemeral: true });
 		}
 
-		if (queue.karaoke && queue.thread) {
-			await queue.thread?.send({
+		if (getKaraokeState(queue.guild.id).karaoke && getKaraokeState(queue.guild.id).thread) {
+			await getKaraokeState(queue.guild.id).thread?.send({
 				content: 'The queue has been stopped. Thank you for singing!'
 			});
 		}

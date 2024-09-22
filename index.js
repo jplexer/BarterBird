@@ -8,6 +8,7 @@ const { token, yt_credentials } = require('./confidentialconfig.json');
 const { Player, usePlayer } = require('discord-player');
 const { lastfm, listenbrainz } = require("./config.json")
 const { setNowPlaying, scrobbleSong } = require('./utils/scrobbling.js');
+const { setKaraokeState, getKaraokeState } = require('./utils/karaoke.js');
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 'GuildVoiceStates'] });
@@ -67,17 +68,6 @@ player.extractors.register(SpotifyExtractor, {
 
 
 player.events.on('playerStart', async (queue, track) => {
-	console.log(queue.metadata.channel.type);
-	if (!queue.thread  && queue.metadata.channel.type === 0 && queue.karaoke) {
-		// create a thread for the session
-		queue.thread = await queue.metadata.channel.threads.create({
-			name: 'Karaoke Session - ' + Date.now(),
-			autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
-			reason: 'Karaoke Session',
-		});
-	}
-	await
-
     queue.metadata.channel.send(`Now Playing: **${track.title}** (${track.duration}) \n @ ${track.url}`);
 	if (lastfm || listenbrainz) {
 		// Update last.fm now playing
@@ -86,7 +76,7 @@ player.events.on('playerStart', async (queue, track) => {
 		})
 	}
 
-	if (queue.karaoke) {
+	if (getKaraokeState(queue.guild.id).karaoke) {
 		const results = await player.lyrics.search({
 			q: track.title + ' ' + track.author,
 		}); // this is a lot better than genius but sometimes gives weird result, specify artistName as well in such situations
@@ -104,7 +94,7 @@ player.events.on('playerStart', async (queue, track) => {
 		syncedLyrics.onChange(async (lyrics, timestamp) => {
 			// timestamp = timestamp in lyrics (not queue's time)
 			// lyrics = line in that timestamp
-			await queue.thread?.send({
+			await getKaraokeState(queue.guild.id).karaoke?.send({
 				content: `${lyrics}`
 			});
 		});
@@ -114,8 +104,8 @@ player.events.on('playerStart', async (queue, track) => {
 });
 
 player.events.on('playerFinish', async (queue, track) => {
-	if (queue.karaoke && queue.thread) {
-		await queue.thread?.send({
+	if (getKaraokeState(queue.guild.id).karaoke && getKaraokeState(queue.guild.id).thread) {
+		await getKaraokeState(queue.guild.id).karaoke?.send({
 			content: 'This song has ended. Thank you for singing!'
 		});
 	}
@@ -139,6 +129,10 @@ player.events.on('playerFinish', async (queue, track) => {
 			scrobbleSong(track, member);
 		})
 	}
+});
+
+player.events.on('disconnect', async (queue, track) => {
+	setKaraokeState(queue.guild.id, false, null);
 });
 
 // Login to Discord with your client's token
