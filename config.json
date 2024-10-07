@@ -2,6 +2,7 @@
     "color": "#211D40",
     "name": "BarterBird",
     "githubRepo": "jplexer/BarterBird",
+    "gitlabRepo": "jplexer/BarterBird",
     "lastfm": true,
     "listenbrainz": true,
     "listenbrainzhost": "https://api.listenbrainz.org"
