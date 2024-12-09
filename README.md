@@ -1,3 +1,5 @@
+# MOVED TO https://gitlab.com/JPlexer/BarterBird
+
 # BarterBird
 
 BarterBird is a Discord bot that provides various functionalities (describe what your bot does here).
